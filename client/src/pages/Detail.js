@@ -25,6 +25,7 @@ class Detail extends Component {
               <h1>
                 {this.state.book.title} by {this.state.book.authors}
               </h1>
+             
             </Jumbotron>
           </Col>
         </Row>
@@ -35,6 +36,12 @@ class Detail extends Component {
               <p>
                 {this.state.book.description}
               </p>
+              <p>
+              <a href={this.state.book.link}>
+              Get the Book Here!
+              </a>
+              </p>
+              <img src={this.state.book.image} alt="book" />
             </article>
           </Col>
         </Row>
