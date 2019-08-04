@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import DeleteBtn from "../components/DeleteBtn";
 import SaveBtn from "../components/SaveBtn";
 import Jumbotron from "../components/Jumbotron";
 import API from "../utils/API";
@@ -33,11 +32,16 @@ class Search extends Component {
   };
 
 
-  saveBook = id => {
-    API.saveBook(id)
-      .then(res => this.loadBooks())
-      .catch(err => console.log(err));
-  };
+  handleSavedButton = event => {
+
+    event.preventDefault();
+    console.log(this.state.books)
+    let savedBooks = this.state.books.filter(book => book.id === event.target.id)
+    savedBooks = savedBooks[0];
+    API.saveBook(savedBooks)
+      .then(alert("Your book is saved"))
+      .catch(err => console.log(err))
+  }
 
 
 
@@ -53,30 +57,30 @@ class Search extends Component {
 
 
     API.searchBooks(this.state.search)
-    .then(res => {
-          // store response in a array
-          let results = res.data.items
-          //map through the array 
-          results = results.map(result => {
-              //store each book information in a new object 
-              result = {
-                  key: result.id,
-                  id: result.id,
-                  title: result.volumeInfo.title,
-                  author: result.volumeInfo.authors,
-                  description: result.volumeInfo.description,
-                  image: result.volumeInfo.imageLinks.thumbnail,
-                  link: result.volumeInfo.infoLink
-              }
-              return result;
-          })
-          // reset the sate of the empty books array to the new arrays of objects with properties geting back from the response
-          this.setState({ books: results, error: "" })
-          this.setState({ search: results, error: "" })
-      
-  })
-  .catch(err => this.setState({ error: err.items }));
-}
+      .then(res => {
+        // store response in a array
+        let results = res.data.items
+        //map through the array 
+        results = results.map(result => {
+          //store each book information in a new object 
+          result = {
+            key: result.id,
+            id: result.id,
+            title: result.volumeInfo.title,
+            author: result.volumeInfo.authors,
+            description: result.volumeInfo.description,
+            image: result.volumeInfo.imageLinks.thumbnail,
+            link: result.volumeInfo.infoLink
+          }
+          return result;
+        })
+        // reset the sate of the empty books array to the new arrays of objects with properties geting back from the response
+        this.setState({ books: results, error: "" })
+        this.setState({ search: results, error: "" })
+
+      })
+      .catch(err => this.setState({ error: err.items }));
+  }
 
 
   render() {
@@ -104,36 +108,37 @@ class Search extends Component {
             </form>
           </Col>
           <Row>
-          <Col size="md-12">
+            <Col size="md-12">
 
-            {this.state.books.length ? (
-              <List>
-                {this.state.books.map(book => (
-                  <ListItem key={book._id}>
+              {this.state.books.length ? (
+                <List>
+
+                  {this.state.books.map(book => (
+                    <ListItem key={book._id}>
                       <strong>
                         {book.title} by {book.authors}
                       </strong>
                       <br></br>
                       <a href={book.link} target="_blank">
-                        Get the Book Here!
+                        View Book Here
                       </a>
                       <br></br>
-                    <h4>Synopsis</h4>
-                    <p>
-                     <img src={book.image} alt="bookImg" /><br></br>
-                      {book.description}
-                    </p>
 
-                    <Link to={"/saved/" + book._id}><SaveBtn onClick={() => this.saveBook(book._id)} />
-                    </Link> 
-                    <DeleteBtn onClick={() => this.deleteBook(book._id)} />
-                  </ListItem>
-                ))}
-              </List>
-            ) : (
-                <h3>No Results to Display</h3>
-              )}
-          </Col>
+
+                      <img src={book.image} alt="bookImg" />
+                      <h4>Synopsis</h4>
+                      {book.description}
+
+
+                      <SaveBtn key={book._id} onClick={this.handleSavedButton} />
+
+                    </ListItem>
+                  ))}
+                </List>
+              ) : (
+                  <h3>No Results to Display</h3>
+                )}
+            </Col>
           </Row>
         </Row>
       </Container>

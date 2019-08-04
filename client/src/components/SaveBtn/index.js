@@ -3,9 +3,9 @@ import "./style.css";
 
 function SaveBtn(props) {
   return (
-    <span className="save-btn" {...props} role="button" tabIndex="0">
-      ✔
-    </span>
+    <button className="save-btn" {...props} role="button" tabIndex="0" style={{ float: "right", marginBottom: 10 }} className="btn btn-success">
+      save
+    </button>
   );
 }
 
