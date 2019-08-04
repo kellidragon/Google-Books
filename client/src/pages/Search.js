@@ -13,17 +13,6 @@ class Search extends Component {
     search: ""
   };
 
-  componentDidMount() {
-    this.loadBooks();
-  }
-
-  loadBooks = () => {
-    API.getBooks()
-      .then(res =>
-        this.setState({ books: res.data, title: "", author: "", description: "" })
-      )
-      .catch(err => console.log(err));
-  };
 
   deleteBook = id => {
     API.deleteBook(id)
@@ -136,7 +125,7 @@ class Search extends Component {
                   ))}
                 </List>
               ) : (
-                  <h3>No Results to Display</h3>
+                  <h3>Results display here</h3>
                 )}
             </Col>
           </Row>

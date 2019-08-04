@@ -14,7 +14,7 @@ function Nav() {
       <a className="boxed navbar-brand" href="/">
        Search
       </a>
-      <a className="boxed navbar-brand" href="/" >
+      <a className="boxed navbar-brand" href="/saved" >
        Saved
       </a>
    
